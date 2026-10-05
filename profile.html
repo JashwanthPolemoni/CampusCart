@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile | CampusCart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .profile-card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            max-width: 650px;
+            margin: 24px auto;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: #ffffff;
+            font-size: 2rem;
+            font-weight: 700;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .profile-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .profile-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .profile-stat-box {
+            background: #f8fafc;
+            padding: 16px;
+            border-radius: 12px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container"></div>
+    </header>
+
+    <main class="container" style="padding-top: 32px; padding-bottom: 40px;">
+        <div class="profile-card">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <div class="profile-avatar" id="profAvatar">JK</div>
+                <div>
+                    <h2 id="profName">Student Name</h2>
+                    <span style="background: #e0e7ff; color: #4338ca; padding: 4px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:3px"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
+                        Verified Campus Member
+                    </span>
+                </div>
+            </div>
+
+            <div class="profile-stats-grid">
+                <div class="profile-stat-box">
+                    <strong id="statListings" style="font-size: 1.4rem; color: #6366f1;">0</strong>
+                    <div style="font-size: 0.85rem; color: #64748b;">Active Listings</div>
+                </div>
+                <div class="profile-stat-box">
+                    <strong id="statFavs" style="font-size: 1.4rem; color: #ec4899;">0</strong>
+                    <div style="font-size: 0.85rem; color: #64748b;">Saved Items</div>
+                </div>
+                <div class="profile-stat-box">
+                    <strong id="statChats" style="font-size: 1.4rem; color: #10b981;">0</strong>
+                    <div style="font-size: 0.85rem; color: #64748b;">Conversations</div>
+                </div>
+            </div>
+
+            <div class="profile-details">
+                <div class="profile-detail-row">
+                    <span style="color: #64748b;">College Email</span>
+                    <strong id="profEmail">user@college.edu</strong>
+                </div>
+                <div class="profile-detail-row">
+                    <span style="color: #64748b;">College</span>
+                    <strong id="profCollege">Engineering College</strong>
+                </div>
+                <div class="profile-detail-row">
+                    <span style="color: #64748b;">Department</span>
+                    <strong id="profDept">Computer Science</strong>
+                </div>
+                <div class="profile-detail-row">
+                    <span style="color: #64748b;">Academic Year</span>
+                    <strong id="profYear">3rd Year</strong>
+                </div>
+                <div class="profile-detail-row">
+                    <span style="color: #64748b;">Phone Number</span>
+                    <strong id="profPhone">+91 98765 43210</strong>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 12px; margin-top: 32px;">
+                <a href="my-listings.html" class="btn btn-outline" style="flex: 1; text-align: center;">My Listings</a>
+                <button class="btn btn-primary" onclick="window.CampusCart.logout()" style="background: #ef4444; border-color: #ef4444;">Logout</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/profile.js"></script>
+</body>
+</html>

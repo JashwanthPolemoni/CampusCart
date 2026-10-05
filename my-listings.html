@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Listings | CampusCart</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- NAVBAR (dynamic via app.js) -->
+    <nav class="navbar">
+        <div class="container nav-container"></div>
+    </nav>
+
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="my-listings-header">
+
+        <div class="container">
+
+            <span class="section-label">
+                SELLER DASHBOARD
+            </span>
+
+            <h1>
+                My Listings
+            </h1>
+
+            <p>
+                Manage the items you have listed
+                on CampusCart.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= LISTINGS ================= -->
+
+    <main class="my-listings-page">
+
+        <div class="container">
+
+
+            <!-- TOP BAR -->
+
+            <div class="listings-topbar">
+
+                <div>
+
+                    <h2>
+                        Your Items
+                    </h2>
+
+                    <p>
+                        <span id="listingCount">0</span>
+                        active listings
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="sell.html"
+                    class="btn btn-primary"
+                >
+                    + List New Item
+                </a>
+
+            </div>
+
+
+
+            <!-- LISTINGS GRID -->
+
+            <div
+                id="myListingsGrid"
+                class="my-listings-grid"
+            >
+            </div>
+
+
+
+            <!-- EMPTY STATE -->
+
+            <div
+                id="noListings"
+                class="no-listings"
+            >
+
+                <div class="no-listings-icon">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                </div>
+
+                <h2>
+                    You haven't listed anything yet
+                </h2>
+
+                <p>
+                    Sell your unused books, electronics,
+                    lab equipment and other items to
+                    fellow students.
+                </p>
+
+                <a
+                    href="sell.html"
+                    class="btn btn-primary"
+                >
+                    Start Selling
+                </a>
+
+            </div>
+
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div>
+
+                    <h2>
+                        Campus<span>Cart</span>
+                    </h2>
+
+                    <p>
+                        Buy. Sell. Exchange.
+                        Right on Campus.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="home.html">
+                        Home
+                    </a>
+
+                    <a href="products.html">
+                        Browse
+                    </a>
+
+                    <a href="sell.html">
+                        Sell
+                    </a>
+
+                    <a href="login.html">
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 CampusCart.
+                    Student Marketplace Prototype.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+   <script src="js/app.js"></script>
+   <script src="js/my-listings.js"></script>
+
+</body>
+
+</html>

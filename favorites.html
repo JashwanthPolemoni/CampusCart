@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saved Favorites | CampusCart</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- NAVBAR -->
+    <header class="navbar">
+        <div class="container nav-container">
+            <!-- Dynamic navbar via app.js -->
+        </div>
+    </header>
+
+    <main class="products-section" style="padding-top: 32px; padding-bottom: 60px;">
+        <div class="container">
+            <div class="products-header" style="margin-bottom: 32px;">
+                <span class="section-label">YOUR SAVED ITEMS</span>
+                <h1>Favorite Listings</h1>
+                <p>Quick access to items you have bookmarked across campus.</p>
+            </div>
+
+            <div class="products-toolbar" style="margin-bottom: 24px;">
+                <div>
+                    <strong id="favCount">0</strong> <span>items saved</span>
+                </div>
+            </div>
+
+            <div class="products-grid" id="favoritesGrid">
+                <!-- Dynamically populated by js/favorites.js -->
+            </div>
+
+            <div id="noFavorites" class="no-listings" style="display: none; text-align: center; padding: 60px 20px;">
+                <div class="no-listings-icon" style="margin-bottom: 16px;">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="1.5"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path></svg>
+                </div>
+                <h2>No Favorites Saved Yet</h2>
+                <p style="color: #64748b; margin-bottom: 24px;">Browse campus marketplace items and tap the heart icon to save them here.</p>
+                <a href="products.html" class="btn btn-primary">Browse Marketplace</a>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-bottom">
+            <div class="container">
+                <p>© 2026 CampusCart. Built for students.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+    <script src="js/favorites.js"></script>
+</body>
+</html>

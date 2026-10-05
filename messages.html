@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Messages | CampusCart</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .chat-container {
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            gap: 20px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            min-height: 550px;
+            overflow: hidden;
+            margin-top: 24px;
+        }
+        .threads-sidebar {
+            border-right: 1px solid #e2e8f0;
+            background: #f8fafc;
+        }
+        .threads-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 700;
+        }
+        .thread-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .thread-item:hover, .thread-item.active {
+            background: #eef2ff;
+        }
+        .chat-window {
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-header {
+            padding: 16px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #ffffff;
+        }
+        .chat-messages {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #f8fafc;
+            max-height: 400px;
+        }
+        .chat-bubble {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+        .chat-bubble.buyer {
+            align-self: flex-end;
+            background: #6366f1;
+            color: #ffffff;
+            border-bottom-right-radius: 4px;
+        }
+        .chat-bubble.seller {
+            align-self: flex-start;
+            background: #ffffff;
+            color: #0f172a;
+            border: 1px solid #e2e8f0;
+            border-bottom-left-radius: 4px;
+        }
+        .chat-input-area {
+            padding: 16px 24px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+            background: #ffffff;
+        }
+        .chat-input-area input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid #cbd5e1;
+            border-radius: 24px;
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-container"></div>
+    </header>
+
+    <main class="container" style="padding-top: 24px; padding-bottom: 40px;">
+        <span class="section-label">STUDENT CHAT & NEGOTIATION</span>
+        <h1>Campus Messages</h1>
+
+        <div class="chat-container">
+            <aside class="threads-sidebar">
+                <div class="threads-header">💬 Conversations</div>
+                <div id="threadsList"></div>
+            </aside>
+
+            <section class="chat-window">
+                <div class="chat-header" id="chatHeader">
+                    <div>
+                        <h3 id="chatItemTitle">Select a conversation</h3>
+                        <span id="chatSellerName" style="color: #64748b; font-size: 0.85rem;"></span>
+                    </div>
+                    <div id="chatProductPrice" style="font-weight: 700; color: #6366f1;"></div>
+                </div>
+
+                <div class="chat-messages" id="chatMessages"></div>
+
+                <div class="chat-input-area">
+                    <input type="text" id="messageInput" placeholder="Type a message to the seller..." onkeypress="if(event.key==='Enter') sendChatMessage()">
+                    <button class="btn btn-primary" onclick="sendChatMessage()">Send 🚀</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+    <script src="js/messages.js"></script>
+</body>
+</html>

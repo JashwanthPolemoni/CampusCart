@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Edit Listing | CampusCart</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= NAVBAR ================= -->
+
+    <nav class="navbar">
+
+        <div class="nav-container">
+
+            <a
+                href="home.html"
+                class="logo"
+            >
+                Campus<span>Cart</span>
+            </a>
+
+
+            <div class="nav-links">
+
+                <a href="home.html">
+                    Home
+                </a>
+
+                <a href="products.html">
+                    Browse
+                </a>
+
+                <a href="sell.html">
+                    Sell
+                </a>
+
+                <a href="my-listings.html">
+                    My Listings
+                </a>
+
+            </div>
+
+
+            <div class="nav-actions">
+
+                <a
+                    href="products.html"
+                    class="btn btn-outline"
+                >
+                    Browse Items
+                </a>
+
+                <a
+                    href="sell.html"
+                    class="btn btn-primary"
+                >
+                    + Sell Item
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+
+    <!-- ================= HEADER ================= -->
+
+    <section class="sell-header">
+
+        <div class="container">
+
+            <span class="section-label">
+                MANAGE LISTING
+            </span>
+
+            <h1>
+                Edit Your Listing
+            </h1>
+
+            <p>
+                Update your product information
+                and save your changes.
+            </p>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- ================= FORM ================= -->
+
+    <main class="sell-page">
+
+        <div class="container">
+
+            <div class="sell-layout">
+
+
+                <div class="sell-form-card">
+
+                    <div class="form-heading">
+
+                        <h2>
+                            Listing Details
+                        </h2>
+
+                        <p>
+                            Make changes to your item below.
+                        </p>
+
+                    </div>
+
+
+                    <form id="editForm">
+
+
+                        <!-- NAME -->
+
+                        <div class="form-group">
+
+                            <label for="productName">
+                                Item Name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="productName"
+                                required
+                            >
+
+                        </div>
+
+
+
+                        <!-- CATEGORY + CONDITION -->
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="productCategory">
+                                    Category
+                                </label>
+
+                                <select
+                                    id="productCategory"
+                                    required
+                                >
+
+                                    <option value="books">
+                                        Books
+                                    </option>
+
+                                    <option value="electronics">
+                                        Electronics
+                                    </option>
+
+                                    <option value="lab">
+                                        Lab Equipment
+                                    </option>
+
+                                    <option value="stationery">
+                                        Stationery
+                                    </option>
+
+                                    <option value="hostel">
+                                        Hostel
+                                    </option>
+
+                                    <option value="accessories">
+                                        Accessories
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <div class="form-group">
+
+                                <label for="productCondition">
+                                    Condition
+                                </label>
+
+                                <select
+                                    id="productCondition"
+                                    required
+                                >
+
+                                    <option value="new">
+                                        New
+                                    </option>
+
+                                    <option value="good">
+                                        Good
+                                    </option>
+
+                                    <option value="used">
+                                        Used
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- PRICE -->
+
+                        <div class="form-group">
+
+                            <label for="productPrice">
+                                Price
+                            </label>
+
+                            <div class="price-input">
+
+                                <span>
+                                    ₹
+                                </span>
+
+                                <input
+                                    type="number"
+                                    id="productPrice"
+                                    min="1"
+                                    required
+                                >
+
+                            </div>
+
+                        </div>
+
+
+
+                        <!-- DESCRIPTION -->
+
+                        <div class="form-group">
+
+                            <label for="productDescription">
+                                Description
+                            </label>
+
+                            <textarea
+                                id="productDescription"
+                                rows="6"
+                                required
+                            ></textarea>
+
+                        </div>
+
+
+
+                        <!-- LOCATION -->
+
+                        <div class="form-group">
+
+                            <label for="productLocation">
+                                Meeting Location
+                            </label>
+
+                            <select
+                                id="productLocation"
+                                required
+                            >
+
+                                <option value="college">
+                                    College Campus
+                                </option>
+
+                                <option value="library">
+                                    College Library
+                                </option>
+
+                                <option value="canteen">
+                                    College Canteen
+                                </option>
+
+                                <option value="hostel">
+                                    Hostel Area
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+
+                        <!-- MESSAGE -->
+
+                        <div
+                            id="editMessage"
+                            class="form-message"
+                        ></div>
+
+
+
+                        <!-- BUTTONS -->
+
+                        <div class="edit-actions">
+
+                            <a
+                                href="my-listings.html"
+                                class="btn btn-outline"
+                            >
+                                Cancel
+                            </a>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary"
+                            >
+                                Save Changes
+                            </button>
+
+                        </div>
+
+
+                    </form>
+
+                </div>
+
+
+
+                <!-- SIDEBAR -->
+
+                <aside class="sell-sidebar">
+
+                    <div class="sell-info-card">
+
+                        <div class="sell-info-icon">
+                            ✏️
+                        </div>
+
+                        <h3>
+                            What Can You Change?
+                        </h3>
+
+                        <ul>
+
+                            <li>
+                                Item name
+                            </li>
+
+                            <li>
+                                Category
+                            </li>
+
+                            <li>
+                                Condition
+                            </li>
+
+                            <li>
+                                Price
+                            </li>
+
+                            <li>
+                                Description
+                            </li>
+
+                            <li>
+                                Meeting location
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <div class="sell-info-card safety-card">
+
+                        <div class="sell-info-icon">
+                            🛡️
+                        </div>
+
+                        <h3>
+                            Keep It Accurate
+                        </h3>
+
+                        <p>
+                            Make sure your listing information
+                            accurately represents the item you
+                            are selling.
+                        </p>
+
+                    </div>
+
+                </aside>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+
+    <!-- ================= FOOTER ================= -->
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div>
+
+                    <h2>
+                        Campus<span>Cart</span>
+                    </h2>
+
+                    <p>
+                        Buy. Sell. Exchange.
+                        Right on Campus.
+                    </p>
+
+                </div>
+
+
+                <div class="footer-links">
+
+                    <a href="home.html">
+                        Home
+                    </a>
+
+                    <a href="products.html">
+                        Browse
+                    </a>
+
+                    <a href="sell.html">
+                        Sell
+                    </a>
+
+                    <a href="login.html">
+                        Login
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <p>
+                    © 2026 CampusCart.
+                    Student Marketplace Prototype.
+                </p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+
+    <script src="js/app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async function () {
+            const params = new URLSearchParams(window.location.search);
+            const listingId = params.get("id");
+            const editForm = document.getElementById("editForm");
+            const message = document.getElementById("editMessage");
+
+            if (!listingId) {
+                if (message) message.textContent = "Listing ID missing.";
+                if (editForm) editForm.style.display = "none";
+                return;
+            }
+
+            const listing = await window.CampusCart.fetchProductById(listingId);
+
+            if (!listing) {
+                if (message) {
+                    message.textContent = "Listing not found.";
+                    message.className = "form-message error";
+                }
+                if (editForm) editForm.style.display = "none";
+                return;
+            }
+
+            document.getElementById("productName").value = listing.name || "";
+            document.getElementById("productCategory").value = listing.category || "books";
+            document.getElementById("productCondition").value = listing.condition || "good";
+            document.getElementById("productPrice").value = listing.price || 0;
+            document.getElementById("productDescription").value = listing.description || "";
+            document.getElementById("productLocation").value = listing.location || "college";
+
+            editForm.addEventListener("submit", async function (event) {
+                event.preventDefault();
+
+                const updatedData = {
+                    name: document.getElementById("productName").value.trim(),
+                    category: document.getElementById("productCategory").value,
+                    condition: document.getElementById("productCondition").value,
+                    price: Number(document.getElementById("productPrice").value),
+                    description: document.getElementById("productDescription").value.trim(),
+                    location: document.getElementById("productLocation").value
+                };
+
+                try {
+                    const res = await fetch(`http://localhost:5000/api/products/${listing._id || listing.customId}`, {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(updatedData)
+                    });
+                    const data = await res.json();
+                    if (data.success) {
+                        message.textContent = "✓ Listing updated successfully in MongoDB!";
+                        message.className = "form-message success";
+                        setTimeout(() => { window.location.href = "my-listings.html"; }, 1000);
+                    } else {
+                        message.textContent = data.error || "Update failed.";
+                        message.className = "form-message error";
+                    }
+                } catch (err) {
+                    message.textContent = "Server connection error.";
+                    message.className = "form-message error";
+                }
+            });
+        });
+    </script>
+
+
+</body>
+
+</html>
