@@ -597,36 +597,35 @@
 
 
                     reader.onload = function (e) {
+                        const img = new Image();
+                        img.onload = function () {
+                            const maxDim = 1200;
+                            let w = img.width;
+                            let h = img.height;
+                            if (w > maxDim || h > maxDim) {
+                                if (w > h) {
+                                    h = Math.round((h * maxDim) / w);
+                                    w = maxDim;
+                                } else {
+                                    w = Math.round((w * maxDim) / h);
+                                    h = maxDim;
+                                }
+                            }
+                            const canvas = document.createElement("canvas");
+                            canvas.width = w;
+                            canvas.height = h;
+                            const ctx = canvas.getContext("2d");
+                            ctx.drawImage(img, 0, 0, w, h);
+                            uploadedImageData = canvas.toDataURL("image/jpeg", 0.85);
 
-                        uploadedImageData =
-                            e.target.result;
-
-
-                        const preview =
-                            document.getElementById(
-                                "imagePreview"
-                            );
-
-
-                        const previewContainer =
-                            document.getElementById(
-                                "imagePreviewContainer"
-                            );
-
-
-                        if (
-                            preview &&
-                            previewContainer
-                        ) {
-
-                            preview.src =
-                                uploadedImageData;
-
-                            previewContainer.style.display =
-                                "block";
-
-                        }
-
+                            const preview = document.getElementById("imagePreview");
+                            const previewContainer = document.getElementById("imagePreviewContainer");
+                            if (preview && previewContainer) {
+                                preview.src = uploadedImageData;
+                                previewContainer.style.display = "block";
+                            }
+                        };
+                        img.src = e.target.result;
                     };
 
 
@@ -753,65 +752,44 @@
                         );
 
 
-                    const data =
-                        await res.json();
+                    let data = null;
+                    try {
+                        data = await res.json();
+                    } catch (e) {
+                        // Response was not JSON
+                    }
 
-
-                    if (data.success) {
-
-
+                    if (res.ok && data && data.success) {
                         message.textContent =
                             "✓ Your item & uploaded image have been listed in MongoDB!";
-
-
                         message.className =
                             "form-message success";
 
-
                         sellForm.reset();
+                        const previewContainer = document.getElementById("imagePreviewContainer");
+                        if (previewContainer) previewContainer.style.display = "none";
+                        uploadedImageData = "";
 
-
-                        setTimeout(
-                            () => {
-
-                                window.location.href =
-                                    "products.html";
-
-                            },
-                            1000
-                        );
-
-
+                        setTimeout(() => {
+                            window.location.href = "products.html";
+                        }, 1000);
+                    } else if (res.status === 413) {
+                        message.textContent = "Image is too large. Please select a smaller image.";
+                        message.className = "form-message error";
                     } else {
-
-
                         message.textContent =
-                            data.error ||
-                            "Failed to post listing.";
-
-
+                            (data && data.error) ||
+                            `Server returned error (${res.status}). Please try again.`;
                         message.className =
                             "form-message error";
-
                     }
 
-
                 } catch (err) {
-
-
-                    console.error(
-                        "Server connection error:",
-                        err
-                    );
-
-
+                    console.error("Server connection error:", err);
                     message.textContent =
-                        "Server connection error.";
-
-
+                        "Server connection error. Please ensure your backend is active and try again.";
                     message.className =
                         "form-message error";
-
                 }
 
             }
