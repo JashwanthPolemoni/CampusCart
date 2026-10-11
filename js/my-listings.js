@@ -61,7 +61,7 @@ async function deleteListing(id) {
     if (!confirm("Are you sure you want to delete this listing?")) return;
 
     try {
-        const res = await fetch(`http://localhost:5000/api/products/${id}`, { method: 'DELETE' });
+        const res = await fetch(`/api/products/${id}`, { method: 'DELETE' });
         const data = await res.json();
         if (data.success) {
             window.CampusCart.showToast("Listing deleted successfully", "info");

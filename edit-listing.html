@@ -5,17 +5,11 @@
 
     <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Edit Listing | CampusCart</title>
 
-    <link
-        rel="stylesheet"
-        href="css/style.css"
-    >
+    <link rel="stylesheet" href="css/style.css">
 
 </head>
 
@@ -29,10 +23,7 @@
 
         <div class="nav-container">
 
-            <a
-                href="home.html"
-                class="logo"
-            >
+            <a href="home.html" class="logo">
                 Campus<span>Cart</span>
             </a>
 
@@ -60,17 +51,11 @@
 
             <div class="nav-actions">
 
-                <a
-                    href="products.html"
-                    class="btn btn-outline"
-                >
+                <a href="products.html" class="btn btn-outline">
                     Browse Items
                 </a>
 
-                <a
-                    href="sell.html"
-                    class="btn btn-primary"
-                >
+                <a href="sell.html" class="btn btn-primary">
                     + Sell Item
                 </a>
 
@@ -142,11 +127,7 @@
                                 Item Name
                             </label>
 
-                            <input
-                                type="text"
-                                id="productName"
-                                required
-                            >
+                            <input type="text" id="productName" required>
 
                         </div>
 
@@ -163,10 +144,7 @@
                                     Category
                                 </label>
 
-                                <select
-                                    id="productCategory"
-                                    required
-                                >
+                                <select id="productCategory" required>
 
                                     <option value="books">
                                         Books
@@ -204,10 +182,7 @@
                                     Condition
                                 </label>
 
-                                <select
-                                    id="productCondition"
-                                    required
-                                >
+                                <select id="productCondition" required>
 
                                     <option value="new">
                                         New
@@ -243,12 +218,7 @@
                                     ₹
                                 </span>
 
-                                <input
-                                    type="number"
-                                    id="productPrice"
-                                    min="1"
-                                    required
-                                >
+                                <input type="number" id="productPrice" min="1" required>
 
                             </div>
 
@@ -264,11 +234,7 @@
                                 Description
                             </label>
 
-                            <textarea
-                                id="productDescription"
-                                rows="6"
-                                required
-                            ></textarea>
+                            <textarea id="productDescription" rows="6" required></textarea>
 
                         </div>
 
@@ -282,10 +248,7 @@
                                 Meeting Location
                             </label>
 
-                            <select
-                                id="productLocation"
-                                required
-                            >
+                            <select id="productLocation" required>
 
                                 <option value="college">
                                     College Campus
@@ -311,10 +274,7 @@
 
                         <!-- MESSAGE -->
 
-                        <div
-                            id="editMessage"
-                            class="form-message"
-                        ></div>
+                        <div id="editMessage" class="form-message"></div>
 
 
 
@@ -322,18 +282,12 @@
 
                         <div class="edit-actions">
 
-                            <a
-                                href="my-listings.html"
-                                class="btn btn-outline"
-                            >
+                            <a href="my-listings.html" class="btn btn-outline">
                                 Cancel
                             </a>
 
 
-                            <button
-                                type="submit"
-                                class="btn btn-primary"
-                            >
+                            <button type="submit" class="btn btn-primary">
                                 Save Changes
                             </button>
 
@@ -524,8 +478,7 @@
                 };
 
                 try {
-                    const res = await fetch(`http://localhost:5000/api/products/${listing._id || listing.customId}`, {
-                        method: 'PUT',
+                    const res = await fetch(`/api/products/${listing._id || listing.customId}`, {
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(updatedData)
                     });

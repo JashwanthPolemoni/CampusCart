@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         let currentUser = loggedUser;
 
         if (email) {
-            const res = await fetch(`http://localhost:5000/api/profile?email=${encodeURIComponent(email)}`);
+            const res = await fetch(`/api/profile?email=${encodeURIComponent(email)}`);
             if (res.ok) {
                 const fetched = await res.json();
                 if (fetched && fetched.name) {
