@@ -17,53 +17,11 @@
 <body>
 
 
-    <!-- ================= NAVBAR ================= -->
-
+    <!-- NAVBAR (dynamic via app.js) -->
     <nav class="navbar">
-
-        <div class="nav-container">
-
-            <a href="home.html" class="logo">
-                Campus<span>Cart</span>
-            </a>
-
-
-            <div class="nav-links">
-
-                <a href="home.html">
-                    Home
-                </a>
-
-                <a href="products.html">
-                    Browse
-                </a>
-
-                <a href="sell.html">
-                    Sell
-                </a>
-
-                <a href="my-listings.html">
-                    My Listings
-                </a>
-
-            </div>
-
-
-            <div class="nav-actions">
-
-                <a href="products.html" class="btn btn-outline">
-                    Browse Items
-                </a>
-
-                <a href="sell.html" class="btn btn-primary">
-                    + Sell Item
-                </a>
-
-            </div>
-
-        </div>
-
+        <div class="container nav-container"></div>
     </nav>
+
 
 
 
@@ -441,6 +399,17 @@
             const editForm = document.getElementById("editForm");
             const message = document.getElementById("editMessage");
 
+            const user = window.CampusCart.getUser();
+            if (!user.isLoggedIn) {
+                if (message) {
+                    message.textContent = "Please log in to edit listings.";
+                    message.className = "form-message error";
+                }
+                if (editForm) editForm.style.display = "none";
+                setTimeout(() => { window.location.href = `login.html?redirect=${encodeURIComponent(window.location.href)}`; }, 1200);
+                return;
+            }
+
             if (!listingId) {
                 if (message) message.textContent = "Listing ID missing.";
                 if (editForm) editForm.style.display = "none";
@@ -452,6 +421,26 @@
             if (!listing) {
                 if (message) {
                     message.textContent = "Listing not found.";
+                    message.className = "form-message error";
+                }
+                if (editForm) editForm.style.display = "none";
+                return;
+            }
+
+            // Check if current user is the owner of this listing (email is the primary key)
+            const userEmail = (user.email || '').toLowerCase().trim();
+            const prodEmail = (listing.sellerEmail || '').toLowerCase().trim();
+            const prodName = (listing.sellerName || '').toLowerCase().trim();
+            const userName = (user.name || '').toLowerCase().trim();
+
+            // If product has an email, email must match. If no email stored, fall back to name.
+            const isOwner = prodEmail
+                ? (userEmail && prodEmail === userEmail)
+                : (userName && prodName && prodName === userName);
+
+            if (!isOwner) {
+                if (message) {
+                    message.innerHTML = "⛔ <strong>Permission Denied:</strong> You can only edit listings that you created under your account.";
                     message.className = "form-message error";
                 }
                 if (editForm) editForm.style.display = "none";
@@ -474,11 +463,14 @@
                     condition: document.getElementById("productCondition").value,
                     price: Number(document.getElementById("productPrice").value),
                     description: document.getElementById("productDescription").value.trim(),
-                    location: document.getElementById("productLocation").value
+                    location: document.getElementById("productLocation").value,
+                    userEmail: user.email,
+                    userName: user.name
                 };
 
                 try {
                     const res = await fetch(`/api/products/${listing._id || listing.customId}`, {
+                        method: 'PUT',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(updatedData)
                     });

@@ -29,7 +29,9 @@ const productSchema = new mongoose.Schema({
         enum: ['available', 'reserved', 'sold']
     },
     reservedBy: { type: String, default: '' },
-    reservedAt: { type: Date }
+    reservedByName: { type: String, default: '' },
+    reservedAt: { type: Date },
+    sellerEmail: { type: String, default: '' }
 }, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

@@ -169,24 +169,54 @@ const seedData = async () => {
         await mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/campuscart');
         console.log('MongoDB connected for seeding...');
 
-        // Seed products
+        // Seed products with sellerEmail
+        const productsWithEmail = DEFAULT_PRODUCTS.map(p => ({
+            ...p,
+            sellerEmail: p.sellerEmail || (p.sellerName.toLowerCase().replace(/\s+/g, '.') + '@college.edu')
+        }));
         await Product.deleteMany({});
-        await Product.insertMany(DEFAULT_PRODUCTS);
-        console.log('✔ Catalog items seeded successfully with correct product images.');
+        await Product.insertMany(productsWithEmail);
+        console.log('✔ Catalog items seeded successfully with correct product images & seller emails.');
 
-        // Seed default user
-        await User.deleteMany({ email: "jashwanth@college.edu" });
-        await User.create({
-            name: "Jashwanth Kumar",
-            email: "jashwanth@college.edu",
-            password: "password123",
-            college: "College of Engineering",
-            department: "Computer Science & Engineering",
-            year: "3rd Year",
-            phone: "+91 98765 43210",
-            avatar: "JK"
-        });
-        console.log('✔ Demo user seeded successfully.');
+        // Seed default users
+        const demoUsers = [
+            {
+                name: "Jashwanth Kumar",
+                email: "jashwanth@college.edu",
+                password: "password123",
+                college: "College of Engineering",
+                department: "Computer Science & Engineering",
+                year: "3rd Year",
+                phone: "+91 98765 43210",
+                avatar: "JK"
+            },
+            {
+                name: "Priya Patel",
+                email: "priya.patel@college.edu",
+                password: "password123",
+                college: "College of Engineering",
+                department: "Electronics & Communication",
+                year: "2nd Year",
+                phone: "+91 98765 11111",
+                avatar: "PP"
+            },
+            {
+                name: "Rahul Sharma",
+                email: "rahul.sharma@college.edu",
+                password: "password123",
+                college: "College of Engineering",
+                department: "Mechanical Engineering",
+                year: "4th Year",
+                phone: "+91 98765 22222",
+                avatar: "RS"
+            }
+        ];
+
+        for (const u of demoUsers) {
+            await User.deleteMany({ email: u.email });
+            await User.create(u);
+        }
+        console.log('✔ Demo users seeded successfully (jashwanth@college.edu, priya.patel@college.edu, rahul.sharma@college.edu).');
 
         process.exit(0);
     } catch (err) {

@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (data.success && data.user) {
                     window.CampusCart.setUser({ ...data.user, isLoggedIn: true });
                     showLoginMessage("Login successful! Redirecting...", "success");
-                    setTimeout(() => { window.location.href = "home.html"; }, 1000);
+                    const redirectUrl = new URLSearchParams(window.location.search).get("redirect") || "home.html";
+                    setTimeout(() => { window.location.href = redirectUrl; }, 1000);
                 } else {
                     showLoginMessage(data.error || "Login failed.", "error");
                 }
@@ -54,7 +55,8 @@ document.addEventListener("DOMContentLoaded", function () {
             };
             window.CampusCart.setUser(demoUser);
             showLoginMessage("Logging in with Demo Account...", "success");
-            setTimeout(() => { window.location.href = "home.html"; }, 1000);
+            const redirectUrl = new URLSearchParams(window.location.search).get("redirect") || "home.html";
+            setTimeout(() => { window.location.href = redirectUrl; }, 1000);
         });
     }
 });

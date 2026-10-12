@@ -37,6 +37,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 function renderProductDetails(product, container) {
     const id = product._id || product.customId;
     const isFav = window.CampusCart.isFavorite ? window.CampusCart.isFavorite(id) : false;
+    const user = window.CampusCart.getUser ? window.CampusCart.getUser() : { isLoggedIn: false };
+    const userEmail = (user && user.email) ? user.email.toLowerCase().trim() : '';
+    const userName = (user && user.name) ? user.name.toLowerCase().trim() : '';
+    const prodEmail = (product.sellerEmail || '').toLowerCase().trim();
+    const prodName = (product.sellerName || '').toLowerCase().trim();
+    const isOwner = !!(user.isLoggedIn && userEmail && prodEmail && prodEmail === userEmail);
     const imgMarkup = product.imageUrl ? `<img src="${product.imageUrl}" class="product-detail-img" style="width: 100%; max-height: 380px; object-fit: cover; border-radius: 16px; box-shadow: 0 10px 25px rgba(0,0,0,0.08);" alt="${escapeHTML(product.name)}">` : `<div class="product-image-placeholder">${getProductIcon(product.category)}</div>`;
 
     container.innerHTML = `
@@ -77,18 +83,30 @@ function renderProductDetails(product, container) {
                 </div>
             </div>
 
-            <div class="product-actions" style="display: flex; gap: 12px; margin-top: 24px;">
-                <button class="btn btn-primary product-contact-btn" onclick="contactSeller()">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>Contact Seller
-                </button>
-                <button class="btn btn-outline favorite-product-btn ${isFav ? 'favorite-active' : ''}" onclick="toggleFavorite(this)">
-                    ${isFav ? '♥ Favorited' : '♡ Favorite'}
-                </button>
-            </div>
+            ${isOwner ? `
+                <div style="margin-top: 24px; padding: 16px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 14px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong style="color: #166534; font-size: 1rem;">🌟 You posted this listing</strong>
+                            <p style="margin: 2px 0 0; font-size: 0.85rem; color: #15803d;">You can update or manage your product details anytime.</p>
+                        </div>
+                        <a href="edit-listing.html?id=${id}" class="btn btn-primary" style="padding: 10px 20px; font-weight: 600;">✏ Edit Listing</a>
+                    </div>
+                </div>
+            ` : `
+                <div class="product-actions" style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button class="btn btn-primary product-contact-btn" onclick="contactSeller()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"></path></svg>Contact Seller
+                    </button>
+                    <button class="btn btn-outline favorite-product-btn ${isFav ? 'favorite-active' : ''}" onclick="toggleFavorite(this)">
+                        ${isFav ? '♥ Favorited' : '♡ Favorite'}
+                    </button>
+                </div>
 
-            <button class="reserve-btn" style="margin-top: 16px; width: 100%; padding: 14px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;" onclick="reserveItem()">
-                Reserve This Item
-            </button>
+                <button class="reserve-btn" style="margin-top: 16px; width: 100%; padding: 14px; background: #10b981; color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;" onclick="reserveItem()">
+                    Reserve This Item
+                </button>
+            `}
 
             <div class="safety-box" style="margin-top: 24px; padding: 16px; background: #f8fafc; border-radius: 12px; display: flex; gap: 12px;">
                 <div class="safety-icon" style="font-size: 1.5rem;">
@@ -129,10 +147,9 @@ function escapeHTML(str) {
 }
 
 function contactSeller() {
-    if (currentProduct) {
-        const id = currentProduct._id || currentProduct.customId;
-        window.CampusCart.startChatWithProduct(id);
-    }
+    if (!currentProduct) return;
+    const id = currentProduct._id || currentProduct.customId;
+    window.CampusCart.startChatWithProduct(id, currentProduct.sellerEmail, currentProduct.sellerName);
 }
 
 async function toggleFavorite(button) {
@@ -152,12 +169,18 @@ function reserveItem() {
     if (!currentProduct) return;
 
     // Check if user is logged in
-    const user = window.CampusCart.getCurrentUser ? window.CampusCart.getCurrentUser() : null;
-    const userName = user ? (user.name || user.email) : localStorage.getItem('campuscart_username');
+    const user = window.CampusCart.getUser ? window.CampusCart.getUser() : { isLoggedIn: false };
 
-    if (!userName) {
+    if (!user.isLoggedIn || !user.email) {
         window.CampusCart.showToast('Please log in to reserve this item.', 'error');
-        setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+        const currentUrl = encodeURIComponent(window.location.href);
+        setTimeout(() => { window.location.href = `login.html?redirect=${currentUrl}`; }, 1200);
+        return;
+    }
+
+    // Check if current user is the seller
+    if (currentProduct.sellerEmail && currentProduct.sellerEmail.toLowerCase() === user.email.toLowerCase()) {
+        window.CampusCart.showToast("You cannot reserve your own listing.", "error");
         return;
     }
 
@@ -166,14 +189,17 @@ function reserveItem() {
     fetch(`/api/products/${id}/reserve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reservedBy: userName })
+        body: JSON.stringify({
+            reservedBy: user.email.toLowerCase(),
+            reservedByName: user.name || user.email
+        })
     })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
             currentProduct = data.product;
-            window.CampusCart.showToast('🎉 Item reserved! Contact the seller to arrange pickup.', 'success');
-            updateReserveButton('reserved', userName);
+            updateReserveButton('reserved', user.email);
+            showReservationModal(currentProduct);
         } else {
             window.CampusCart.showToast(data.error || 'Could not reserve item.', 'error');
         }
@@ -186,20 +212,21 @@ function reserveItem() {
 function cancelReservation() {
     if (!currentProduct) return;
 
-    const user = window.CampusCart.getCurrentUser ? window.CampusCart.getCurrentUser() : null;
-    const userName = user ? (user.name || user.email) : localStorage.getItem('campuscart_username');
+    const user = window.CampusCart.getUser ? window.CampusCart.getUser() : { isLoggedIn: false };
+    if (!user.isLoggedIn || !user.email) return;
+
     const id = currentProduct._id || currentProduct.customId;
 
     fetch(`/api/products/${id}/unreserve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ reservedBy: userName })
+        body: JSON.stringify({ reservedBy: user.email.toLowerCase() })
     })
     .then(res => res.json())
     .then(data => {
         if (data.success) {
             currentProduct = data.product;
-            window.CampusCart.showToast('Reservation cancelled.', 'success');
+            window.CampusCart.showToast('Reservation cancelled. Item is now available.', 'success');
             updateReserveButton('available', '');
         } else {
             window.CampusCart.showToast(data.error || 'Could not cancel reservation.', 'error');
@@ -214,8 +241,10 @@ function updateReserveButton(status, reservedBy) {
     const btn = document.querySelector('.reserve-btn');
     if (!btn) return;
 
-    const user = window.CampusCart.getCurrentUser ? window.CampusCart.getCurrentUser() : null;
-    const userName = user ? (user.name || user.email) : localStorage.getItem('campuscart_username');
+    const user = window.CampusCart.getUser ? window.CampusCart.getUser() : { isLoggedIn: false };
+    const userEmail = (user && user.email) ? user.email.toLowerCase() : '';
+    const userName = (user && user.name) ? user.name.toLowerCase() : '';
+    const reservedByNorm = (reservedBy || '').toLowerCase();
 
     if (status === 'available') {
         btn.disabled = false;
@@ -223,31 +252,68 @@ function updateReserveButton(status, reservedBy) {
         btn.style.cursor = 'pointer';
         btn.style.opacity = '1';
         btn.onclick = reserveItem;
-        btn.textContent = 'Reserve This Item';
+        btn.innerHTML = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px;"><path d="M5 13l4 4L19 7"/></svg>Reserve This Item`;
     } else if (status === 'reserved') {
-        if (reservedBy === userName) {
+        const isUserReserved = user.isLoggedIn && (reservedByNorm === userEmail || reservedByNorm === userName);
+        if (isUserReserved) {
             // Current user reserved it — show cancel option
             btn.disabled = false;
-            btn.style.background = '#ef4444';
+            btn.style.background = '#e11d48';
             btn.style.cursor = 'pointer';
             btn.style.opacity = '1';
             btn.onclick = cancelReservation;
-            btn.textContent = '✅ Reserved by You — Cancel Reservation';
+            btn.innerHTML = `✅ Reserved by You — Cancel Reservation`;
         } else {
             // Someone else reserved it
             btn.disabled = true;
             btn.style.background = '#94a3b8';
             btn.style.cursor = 'not-allowed';
-            btn.style.opacity = '0.7';
+            btn.style.opacity = '0.85';
             btn.onclick = null;
-            btn.textContent = '🔒 Already Reserved';
+            btn.innerHTML = `🔒 Already Reserved by another student`;
         }
     } else if (status === 'sold') {
         btn.disabled = true;
-        btn.style.background = '#94a3b8';
+        btn.style.background = '#64748b';
         btn.style.cursor = 'not-allowed';
         btn.style.opacity = '0.7';
         btn.onclick = null;
         btn.textContent = '❌ Item Sold';
     }
+}
+
+function showReservationModal(product) {
+    let modal = document.getElementById("reservationSuccessModal");
+    if (!modal) {
+        modal = document.createElement("div");
+        modal.id = "reservationSuccessModal";
+        modal.className = "cc-modal-overlay";
+        modal.innerHTML = `
+            <div class="cc-modal-card">
+                <div class="cc-modal-icon">🎉</div>
+                <h2 style="font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; color: #0f172a;">Item Reserved Successfully!</h2>
+                <p style="font-size: 0.95rem; color: #64748b; margin-bottom: 22px; line-height: 1.5;">
+                    You have successfully reserved <strong>${escapeHTML(product.name)}</strong>! Chat with the seller now to arrange payment and campus pickup point.
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <button id="modalChatBtn" class="btn btn-primary" style="width: 100%; padding: 12px; font-weight: 600; font-size: 1rem; border-radius: 10px;">
+                        💬 Chat with Seller Now
+                    </button>
+                    <button id="modalCloseBtn" class="btn btn-outline" style="width: 100%; padding: 10px; border: 1px solid #cbd5e1; color: #475569; border-radius: 10px;">
+                        Close / Stay on Page
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+
+        modal.querySelector("#modalChatBtn").onclick = () => {
+            modal.style.display = "none";
+            contactSeller();
+        };
+        modal.querySelector("#modalCloseBtn").onclick = () => {
+            modal.style.display = "none";
+        };
+    }
+    modal.style.display = "flex";
 }
