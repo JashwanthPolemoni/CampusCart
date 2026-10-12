@@ -23,15 +23,18 @@ async function fetchAndRenderProducts() {
     const selectedCategory = document.querySelector('input[name="category"]:checked');
     const category = selectedCategory ? selectedCategory.value : "all";
     const selectedConditions = Array.from(document.querySelectorAll('input[name="condition"]:checked')).map(c => c.value);
-    const maxPrice = priceRange ? priceRange.value : 5000;
 
-    const products = await window.CampusCart.fetchProducts({
-        category: category,
-        search: searchText,
-        condition: selectedConditions.join(','),
-        maxPrice: maxPrice
-    });
+    const queryParams = {};
+    if (category && category !== "all") queryParams.category = category;
+    if (searchText) queryParams.search = searchText;
+    if (selectedConditions.length > 0) queryParams.condition = selectedConditions.join(',');
 
+    // Only apply maxPrice if the user has specifically moved the slider below maximum
+    if (priceRange && Number(priceRange.value) < Number(priceRange.max)) {
+        queryParams.maxPrice = priceRange.value;
+    }
+
+    const products = await window.CampusCart.fetchProducts(queryParams);
     renderProductCards(products);
 }
 
@@ -61,6 +64,15 @@ function renderProductCards(products) {
         const isFav = window.CampusCart.isFavorite ? window.CampusCart.isFavorite(id) : false;
         const imgMarkup = item.imageUrl ? `<img src="${item.imageUrl}" class="product-real-img" alt="${escapeHTML(item.name)}">` : `<div class="product-placeholder">${getProductIcon(item.category)}</div>`;
 
+        const isReserved = item.status === 'reserved';
+        const isSold = item.status === 'sold';
+        let statusBadge = '';
+        if (isReserved) {
+            statusBadge = `<span style="position: absolute; top: 12px; left: 12px; background: rgba(225, 29, 72, 0.9); color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; z-index: 2;">Reserved</span>`;
+        } else if (isSold) {
+            statusBadge = `<span style="position: absolute; top: 12px; left: 12px; background: rgba(100, 116, 139, 0.9); color: white; padding: 3px 8px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; z-index: 2;">Sold</span>`;
+        }
+
         const card = document.createElement("article");
         card.className = "market-product-card";
         card.dataset.category = item.category;
@@ -69,19 +81,23 @@ function renderProductCards(products) {
         card.dataset.name = item.name;
 
         card.innerHTML = `
-            <div class="market-product-image">
+            <div class="market-product-image" style="position: relative;">
+                ${statusBadge}
                 ${imgMarkup}
                 <button class="market-heart ${isFav ? 'favorite-active' : ''}" type="button" onclick="toggleCardFavorite('${id}', this)">
                     ${isFav ? '♥' : '♡'}
                 </button>
             </div>
             <div class="market-product-content">
-                <span class="product-category">${formatCategory(item.category)}</span>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">
+                    <span class="product-category">${formatCategory(item.category)}</span>
+                    <small style="color:#64748b; font-size:0.75rem;">${escapeHTML(item.sellerName || 'Student')}</small>
+                </div>
                 <h3>${escapeHTML(item.name)}</h3>
                 <p class="product-card-description">${escapeHTML(item.description)}</p>
                 <div class="market-product-bottom">
                     <strong>₹${item.price}</strong>
-                    <a href="product-details.html?id=${id}">View →</a>
+                    <a href="product-details.html?id=${id}">${isReserved ? 'Details →' : 'View →'}</a>
                 </div>
             </div>
         `;
@@ -125,7 +141,13 @@ if (searchInput) searchInput.addEventListener("input", fetchAndRenderProducts);
 if (sortSelect) sortSelect.addEventListener("change", fetchAndRenderProducts);
 if (priceRange) {
     priceRange.addEventListener("input", function () {
-        if (priceValue) priceValue.textContent = "₹" + priceRange.value;
+        if (priceValue) {
+            if (Number(priceRange.value) >= Number(priceRange.max)) {
+                priceValue.textContent = "All Prices";
+            } else {
+                priceValue.textContent = "₹" + priceRange.value;
+            }
+        }
         fetchAndRenderProducts();
     });
 }
@@ -139,8 +161,10 @@ if (clearFilters) {
         const allCategory = document.querySelector('input[name="category"][value="all"]');
         if (allCategory) allCategory.checked = true;
         document.querySelectorAll('input[name="condition"]').forEach(cb => cb.checked = false);
-        if (priceRange) priceRange.value = 5000;
-        if (priceValue) priceValue.textContent = "₹5000";
+        if (priceRange) {
+            priceRange.value = priceRange.max;
+            if (priceValue) priceValue.textContent = "All Prices";
+        }
         fetchAndRenderProducts();
     });
 }

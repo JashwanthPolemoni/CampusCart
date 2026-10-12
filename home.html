@@ -99,7 +99,7 @@
 
                         <div>
                             <span>Active Listings</span>
-                            <strong>24</strong>
+                            <strong id="statActiveListings">...</strong>
                         </div>
 
                     </div>
@@ -249,158 +249,10 @@
                 </div>
 
 
-                <div class="dashboard-products">
-
-
-                    <article class="dashboard-product-card">
-
-                        <div class="dashboard-product-image" style="padding:0; overflow:hidden;">
-
-                            <img src="images/engineering_math_book.jpg" class="product-real-img" alt="Engineering Mathematics">
-
-                            <button class="product-heart" onclick="window.CampusCart.toggleFavorite('default-1')">
-                                ♡
-                            </button>
-
-                        </div>
-
-                        <div class="dashboard-product-content">
-
-                            <span class="product-category">
-                                BOOKS
-                            </span>
-
-                            <h3>
-                                <a href="product-details.html?id=default-1" style="text-decoration: none; color: inherit;">Engineering Mathematics</a>
-                            </h3>
-
-                            <p>
-                                2nd Year • Good Condition
-                            </p>
-
-                            <div class="dashboard-product-bottom">
-
-                                <strong>₹350</strong>
-
-                                <a href="product-details.html?id=default-1" class="view-all">View →</a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="dashboard-product-card">
-
-                        <div class="dashboard-product-image" style="padding:0; overflow:hidden;">
-
-                            <img src="images/casio_calculator.jpg" class="product-real-img" alt="Scientific Calculator">
-
-                            <button class="product-heart" onclick="window.CampusCart.toggleFavorite('default-2')">♡</button>
-
-                        </div>
-
-                        <div class="dashboard-product-content">
-
-                            <span class="product-category">
-                                ELECTRONICS
-                            </span>
-
-                            <h3>
-                                <a href="product-details.html?id=default-2" style="text-decoration: none; color: inherit;">Casio Scientific Calculator</a>
-                            </h3>
-
-                            <p>
-                                Like New • Used 3 Months
-                            </p>
-
-                            <div class="dashboard-product-bottom">
-
-                                <strong>₹700</strong>
-
-                                <a href="product-details.html?id=default-2" class="view-all">View →</a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="dashboard-product-card">
-
-                        <div class="dashboard-product-image" style="padding:0; overflow:hidden;">
-
-                            <img src="images/arduino_uno.jpg" class="product-real-img" alt="Arduino Uno">
-
-                            <button class="product-heart" onclick="window.CampusCart.toggleFavorite('default-3')">♡</button>
-
-                        </div>
-
-                        <div class="dashboard-product-content">
-
-                            <span class="product-category">
-                                LAB EQUIPMENT
-                            </span>
-
-                            <h3>
-                                <a href="product-details.html?id=default-3" style="text-decoration: none; color: inherit;">Arduino Uno</a>
-                            </h3>
-
-                            <p>
-                                Working • Original Board
-                            </p>
-
-                            <div class="dashboard-product-bottom">
-
-                                <strong>₹450</strong>
-
-                                <a href="product-details.html?id=default-3" class="view-all">View →</a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
-
-                    <article class="dashboard-product-card">
-
-                        <div class="dashboard-product-image" style="padding:0; overflow:hidden;">
-
-                            <img src="images/bluetooth_headphones.jpg" class="product-real-img" alt="Bluetooth Headphones">
-
-                            <button class="product-heart" onclick="window.CampusCart.toggleFavorite('default-4')">♡</button>
-
-                        </div>
-
-                        <div class="dashboard-product-content">
-
-                            <span class="product-category">
-                                ACCESSORIES
-                            </span>
-
-                            <h3>
-                                <a href="product-details.html?id=default-4" style="text-decoration: none; color: inherit;">Bluetooth Headphones</a>
-                            </h3>
-
-                            <p>
-                                Good Condition • Wireless
-                            </p>
-
-                            <div class="dashboard-product-bottom">
-
-                                <strong>₹900</strong>
-
-                                <a href="product-details.html?id=default-4" class="view-all">View →</a>
-
-                            </div>
-
-                        </div>
-
-                    </article>
-
+                <div class="dashboard-products" id="recentProductsContainer">
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 30px; color: #64748b;">
+                        Loading recent listings...
+                    </div>
                 </div>
 
             </div>
@@ -469,6 +321,7 @@
     <!-- JAVASCRIPT -->
 
     <script src="js/app.js"></script>
+    <script src="js/home.js"></script>
 
 </body>
 

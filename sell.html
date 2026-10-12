@@ -82,6 +82,8 @@
 
 
 
+                    <div id="sellAuthWarning" style="display:none; background:#fef2f2; border:1px solid #fecaca; color:#991b1b; padding:14px; border-radius:10px; margin-bottom:16px;"></div>
+
                     <form id="sellForm">
 
 
@@ -583,6 +585,16 @@
 
         let uploadedImageData = "";
 
+        // Check login state
+        const currentUser = window.CampusCart.getUser ? window.CampusCart.getUser() : { isLoggedIn: false };
+        if (!currentUser.isLoggedIn) {
+            const warning = document.getElementById("sellAuthWarning");
+            if (warning) {
+                warning.style.display = "block";
+                warning.innerHTML = `⚠️ <strong>You are not logged in.</strong> Please <a href="login.html?redirect=sell.html" style="color:#b91c1c; text-decoration:underline; font-weight:600;">log in to your account</a> so your item can be published and buyers can message you!`;
+            }
+        }
+
 
         if (fileInput) {
 
@@ -712,9 +724,18 @@
                 const user =
                     window.CampusCart.getUser();
 
+                if (!user || !user.isLoggedIn || !user.email) {
+                    message.textContent =
+                        "Please log in first so buyers can reach you to buy this item!";
+                    message.className =
+                        "form-message error";
+                    setTimeout(() => {
+                        window.location.href = "login.html?redirect=sell.html";
+                    }, 1400);
+                    return;
+                }
 
                 try {
-
 
                     const res =
                         await fetch(
@@ -744,11 +765,10 @@
 
                                         sellerName:
                                             user.name ||
-                                            "Jashwanth Polemoni",
+                                            "Campus Student",
 
                                         sellerEmail:
-                                            user.email ||
-                                            ""
+                                            user.email.toLowerCase().trim()
 
                                     })
 
